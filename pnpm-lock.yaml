@@ -19,9 +19,6 @@ dependencies:
   '@mui/material-nextjs':
     specifier: ^6.1.2
     version: 6.1.2(@emotion/cache@11.13.1)(@emotion/react@11.13.3)(@types/react@18.3.1)(next@14.2.14)(react@18.3.1)
-  '@next/font':
-    specifier: ^14.2.14
-    version: 14.2.14(next@14.2.14)
   firebase:
     specifier: ^10.14.0
     version: 10.14.0
@@ -1246,14 +1243,6 @@ packages:
     dependencies:
       glob: 10.3.10
     dev: true
-
-  /@next/font@14.2.14(next@14.2.14):
-    resolution: {integrity: sha512-eEIlLQ0OwKlsjKUPqcjwawRany3LqCXVYYXWPOQsr57nABnI7U7Nuu+uW3Q2GnAe1vVO8BPW0a/OvAEXxNmyTg==}
-    peerDependencies:
-      next: '*'
-    dependencies:
-      next: 14.2.14(react-dom@18.3.1)(react@18.3.1)
-    dev: false
 
   /@next/swc-darwin-arm64@14.2.14:
     resolution: {integrity: sha512-bsxbSAUodM1cjYeA4o6y7sp9wslvwjSkWw57t8DtC8Zig8aG8V6r+Yc05/9mDzLKcybb6EN85k1rJDnMKBd9Gw==}
