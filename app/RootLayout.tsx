@@ -1,7 +1,7 @@
+import { roboto } from '@/app/fonts'
+import theme from '@/themes/theme'
 import { ThemeProvider } from '@mui/material'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
-import theme from './themes/theme'
-import { roboto } from './fonts/RobotoFont'
 
 export default function RootLayout({
     children,

@@ -1,6 +1,6 @@
+import { roboto } from '@/app/fonts'
+import MuiProvider from '@/providers/mui-provider'
 import type { Metadata } from 'next'
-import MuiProvider from './providers/mui-provider'
-import { roboto } from './fonts/RobotoFont'
 import './globals.css'
 
 export const metadata: Metadata = {
