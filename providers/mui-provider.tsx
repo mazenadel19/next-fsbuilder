@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
-import theme from '../themes/theme'
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
+import theme from '@/themes/theme'
 
 const MuiProvider = ({
     children,

@@ -10,9 +10,6 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.13.0
     version: 11.13.0(@emotion/react@11.13.3)(@types/react@18.3.1)(react@18.3.1)
-  '@fontsource/roboto':
-    specifier: ^5.1.0
-    version: 5.1.0
   '@mui/icons-material':
     specifier: ^6.1.1
     version: 6.1.1(@mui/material@6.1.2)(@types/react@18.3.1)(react@18.3.1)
@@ -22,6 +19,9 @@ dependencies:
   '@mui/material-nextjs':
     specifier: ^6.1.2
     version: 6.1.2(@emotion/cache@11.13.1)(@emotion/react@11.13.3)(@types/react@18.3.1)(next@14.2.14)(react@18.3.1)
+  '@next/font':
+    specifier: ^14.2.14
+    version: 14.2.14(next@14.2.14)
   firebase:
     specifier: ^10.14.0
     version: 10.14.0
@@ -967,10 +967,6 @@ packages:
     resolution: {integrity: sha512-jmEnr/pk0yVkA7mIlHNnxCi+wWzOFUg0WyIotgkKAb2u1J7fAeDBcVNSTjTihbAYNusCLQdW5s9IJ5qwnEufcQ==}
     dev: false
 
-  /@fontsource/roboto@5.1.0:
-    resolution: {integrity: sha512-cFRRC1s6RqPygeZ8Uw/acwVHqih8Czjt6Q0MwoUoDe9U3m4dH1HmNDRBZyqlMSFwgNAUKgFImncKdmDHyKpwdg==}
-    dev: false
-
   /@grpc/grpc-js@1.9.15:
     resolution: {integrity: sha512-nqE7Hc0AzI+euzUwDAy0aY5hCp10r734gMGRdU+qOPX0XSceI2ULrcXB5U2xSc5VkWwalCj4M7GzCAygZl2KoQ==}
     engines: {node: ^8.13.0 || >=10.10.0}
@@ -1250,6 +1246,14 @@ packages:
     dependencies:
       glob: 10.3.10
     dev: true
+
+  /@next/font@14.2.14(next@14.2.14):
+    resolution: {integrity: sha512-eEIlLQ0OwKlsjKUPqcjwawRany3LqCXVYYXWPOQsr57nABnI7U7Nuu+uW3Q2GnAe1vVO8BPW0a/OvAEXxNmyTg==}
+    peerDependencies:
+      next: '*'
+    dependencies:
+      next: 14.2.14(react-dom@18.3.1)(react@18.3.1)
+    dev: false
 
   /@next/swc-darwin-arm64@14.2.14:
     resolution: {integrity: sha512-bsxbSAUodM1cjYeA4o6y7sp9wslvwjSkWw57t8DtC8Zig8aG8V6r+Yc05/9mDzLKcybb6EN85k1rJDnMKBd9Gw==}

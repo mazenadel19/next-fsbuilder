@@ -1,5 +1,5 @@
 import { onValue, push, ref, set } from 'firebase/database'
-import { db } from '../lib/firebase'
+import { db } from '@/lib/firebase'
 
 export const fetchData = async () => {
     return new Promise((resolve, reject) => {
