@@ -1,14 +1,7 @@
 import type { Metadata } from 'next'
 import MuiProvider from './providers/mui-provider'
-import { Roboto } from 'next/font/google'
+import { roboto } from './fonts/RobotoFont'
 import './globals.css'
-
-const roboto = Roboto({
-    weight: ['300', '400', '500', '700'],
-    subsets: ['latin'],
-    display: 'swap',
-    variable: '--font-roboto',
-})
 
 export const metadata: Metadata = {
     title: 'Create Next App',
