@@ -17,7 +17,7 @@ export default function ButtonAppBar() {
                         </Link>
                     </Typography>
 
-                    <Link href="/new" passHref>
+                    <Link href="/new">
                         <Button aria-label="create new file or folder" style={{ color: 'white' }}>
                             NEW
                         </Button>
