@@ -1,16 +1,39 @@
 'use client'
 import { writeData } from '@/utils/actions'
-import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
+import {
+    Box,
+    Button,
+    Container,
+    FormControl,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    TextField,
+    Typography,
+} from '@mui/material'
 import Link from 'next/link'
-import { useFormStatus, useFormState } from 'react-dom'
+import { redirect } from 'next/navigation'
+import { useEffect } from 'react'
+import { useFormState, useFormStatus } from 'react-dom'
+import toast from 'react-hot-toast'
 
-const initialState = {
-    name: '',
-    type: 'file',
-    parent: 'root',
+export type stateType = {
+    data: {
+        name: string
+        type: '' | 'file' | 'folder'
+        parent: string
+    }
+    message: null | 'failed' | 'success'
 }
 
-export type stateType = typeof initialState
+export const initialState: stateType = {
+    data: {
+        name: '',
+        type: '',
+        parent: '',
+    },
+    message: null,
+}
 
 const SubmitButton = () => {
     const { pending } = useFormStatus()
@@ -24,6 +47,34 @@ const SubmitButton = () => {
 
 export default function NewPage() {
     const [state, formAction] = useFormState<stateType>(writeData, initialState)
+
+    useEffect(() => {
+        if (state.message === 'failed') {
+            let errorMsg = ''
+            if (!state.data.name) {
+                errorMsg = 'Please Add The Name'
+            } else if (!state.data.type) {
+                errorMsg = 'Please Select The Type'
+            } else {
+                errorMsg = 'Please Select The Parent'
+            }
+            toast.error(errorMsg, {
+                ariaProps: {
+                    role: 'alert',
+                    'aria-live': 'assertive',
+                },
+            })
+        }
+        if (state.message === 'success') {
+            toast.success(state.message, {
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': 'off',
+                },
+            })
+            redirect('/')
+        }
+    }, [state.data.name, state.data.type, state.message])
 
     return (
         <Container
@@ -39,26 +90,27 @@ export default function NewPage() {
                 <TextField
                     name="name"
                     fullWidth
-                    id="name"
-                    label="Name"
                     variant="outlined"
                     margin="normal"
                     required
                     aria-label="Name of file or folder"
-                    defaultValue={state.name}
+                    placeholder="Name of file or folder"
+                    defaultValue={state.data.name}
                 />
 
                 {/* Type Select */}
                 <FormControl fullWidth margin="normal" required>
-                    <InputLabel id="type-label">Type</InputLabel>
                     <Select
                         name="type"
-                        labelId="type-label"
-                        id="type"
-                        defaultValue={state.type}
-                        label="Type"
-                        aria-label="Pick the type"
+                        defaultValue={state.data.type}
+                        inputProps={{ 'aria-label': 'Select The Type' }}
+                        aria-label="Select The Type"
+                        displayEmpty
+                        input={<OutlinedInput />}
                     >
+                        <MenuItem disabled value="">
+                            <em>Select The Type</em>
+                        </MenuItem>
                         <MenuItem value="file">File</MenuItem>
                         <MenuItem value="folder">Folder</MenuItem>
                     </Select>
@@ -66,15 +118,16 @@ export default function NewPage() {
 
                 {/* Parent Select */}
                 <FormControl fullWidth margin="normal" required>
-                    <InputLabel id="parent-label">Parent</InputLabel>
                     <Select
                         name="parent"
-                        labelId="parent-label"
-                        id="parent"
-                        defaultValue={state.parent}
-                        label="Parent"
-                        aria-label="Select parent folder"
+                        defaultValue={state.data.parent}
+                        inputProps={{ 'aria-label': 'Select Parent folder' }}
+                        displayEmpty
+                        input={<OutlinedInput />}
                     >
+                        <MenuItem disabled value="">
+                            <em>Select Parent folder</em>
+                        </MenuItem>
                         <MenuItem value="root">Root</MenuItem>
                         <MenuItem value="folder1">Folder 1</MenuItem>
                         <MenuItem value="folder2">Folder 2</MenuItem>

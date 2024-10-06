@@ -1,20 +1,12 @@
-import { onValue, push, ref, set } from 'firebase/database'
-import { db } from '@/lib/firebase'
+'use server'
+import { BASE_URL } from '@/app/constants'
 import { stateType } from '@/app/new/page'
-import { redirect } from 'next/navigation'
+
+const FS_END_POINT = `${BASE_URL}/fs.json`
 
 export const fetchData = async () => {
-    return new Promise((resolve, reject) => {
-        const dbRef = ref(db, 'fs')
-        onValue(dbRef, (snapshot) => {
-            const data = snapshot.val()
-            if (data) {
-                resolve(data)
-            } else {
-                reject(new Error('No data found'))
-            }
-        })
-    })
+    const response = await fetch(FS_END_POINT)
+    return response.json()
 }
 
 export const writeData: any = async (prevState: stateType, formData: FormData) => {
@@ -22,13 +14,28 @@ export const writeData: any = async (prevState: stateType, formData: FormData) =
     const type = formData.get('type')
     const parent = formData.get('parent')
 
-    const dbRef = ref(db, 'fs')
-    const newDbRef = push(dbRef)
-    await set(newDbRef, {
-        name,
-        type,
-        parent,
-    })
+    try {
+        if (!name || !type || !parent) {
+            throw new Error('Please Add All Fields')
+        }
 
-    redirect('/')
+        const data = { name, type, parent }
+        const response = await fetch(FS_END_POINT, {
+            method: 'post',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+
+        if (!response.ok) {
+            throw new Error('Failed To Send Data')
+        }
+
+        return { data: { name: '', type: '', parent: '' }, message: 'success' }
+    } catch (error: unknown) {
+        console.error((error as Error).message)
+        return { data: { name, type, parent }, message: 'failed' }
+    }
 }
