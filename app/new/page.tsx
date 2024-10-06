@@ -18,28 +18,28 @@ import { useEffect, useContext } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 
-interface Data {
+interface Data<T> {
     name: string
-    type: '' | 'file' | 'folder'
+    type: T
     parent: string
 }
 
-export interface DataWithId extends Data {
+export interface DataWithId extends Data<'file' | 'folder'> {
     id: string
 }
 
 type Success = {
-    data: Data
+    data: Data<'file' | 'folder'>
     message: 'success'
     extra: DataWithId
 }
 
 type Failure = {
-    data: Data
+    data: Data<'file' | 'folder'>
     message: 'failed'
 }
 type Idle = {
-    data: Data
+    data: Data<''>
     message: null
 }
 

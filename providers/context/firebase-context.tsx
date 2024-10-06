@@ -3,6 +3,7 @@ import { createContext, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { fetchData, FSDataType } from '../../utils/actions'
 import { DataWithId } from '@/app/new/page'
+import { convertToTree, Node } from '@/utils/helper'
 
 interface FirebaseContextData {
     folders: {
@@ -11,36 +12,39 @@ interface FirebaseContextData {
         parent: string
         type: string
     }[]
+    tree: Node[]
     setFirebaseData: (node: DataWithId) => void
 }
 export const FirebaseContext = createContext<FirebaseContextData>({
     folders: [],
+    tree: [],
     setFirebaseData: () => {},
 })
 
 function FirebaseProvider({ children }: Readonly<{ children: React.ReactNode }>) {
-    const [tree, setTree] = useState<FSDataType>({})
+    const [data, setData] = useState<FSDataType>({})
+    const tree = convertToTree(data)
 
     const folders = useMemo(
         () =>
-            Object.entries(tree)
+            Object.entries(data)
                 .filter(([, value]) => value.type === 'folder')
                 .map(([key, value]) => ({ ...value, id: key })),
-        [tree]
+        [data]
     )
 
     const setFirebaseData = (node: DataWithId) => {
         const { id, name, parent, type } = node
-        setTree((prev) => ({ ...prev, [id]: { name, parent, type } }))
+        setData((prev) => ({ ...prev, [id]: { name, parent, type } }))
     }
 
-    const memoizedContextValue = useMemo(() => ({ folders, setFirebaseData }), [folders])
+    const memoizedContextValue = useMemo(() => ({ tree, folders, setFirebaseData }), [folders, tree])
 
     useEffect(() => {
         fetchData()
             .then((data) => {
                 if (data) {
-                    setTree(data)
+                    setData(data)
                 }
             })
             .catch((error) => {

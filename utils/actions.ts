@@ -7,7 +7,7 @@ const FS_END_POINT = `${BASE_URL}/fs.json`
 interface Node {
     name: string
     parent: string
-    type: string
+    type: 'file' | 'folder'
 }
 export type FSDataType = Record<string, Node>
 export const fetchData = async () => {
