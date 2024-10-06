@@ -26,7 +26,7 @@ export type stateType = {
     message: null | 'failed' | 'success'
 }
 
-export const initialState: stateType = {
+const initialState: stateType = {
     data: {
         name: '',
         type: '',
