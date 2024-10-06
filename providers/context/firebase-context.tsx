@@ -1,23 +1,57 @@
 'use client'
-import { createContext, useState, useMemo } from 'react'
+import { createContext, useEffect, useMemo, useState } from 'react'
+import toast from 'react-hot-toast'
+import { fetchData, FSDataType } from '../../utils/actions'
+import { DataWithId } from '@/app/new/page'
 
 interface FirebaseContextData {
-    data: any[]
-    getFirebaseData: () => void
+    folders: {
+        id: string
+        name: string
+        parent: string
+        type: string
+    }[]
+    setFirebaseData: (node: DataWithId) => void
 }
 export const FirebaseContext = createContext<FirebaseContextData>({
-    data: [],
-    getFirebaseData: () => {},
+    folders: [],
+    setFirebaseData: () => {},
 })
 
 function FirebaseProvider({ children }: Readonly<{ children: React.ReactNode }>) {
-    const [data, setData] = useState<any[]>([])
+    const [tree, setTree] = useState<FSDataType>({})
 
-    const getFirebaseData = () => {
-        setData([])
+    const folders = useMemo(
+        () =>
+            Object.entries(tree)
+                .filter(([, value]) => value.type === 'folder')
+                .map(([key, value]) => ({ ...value, id: key })),
+        [tree]
+    )
+
+    const setFirebaseData = (node: DataWithId) => {
+        const { id, name, parent, type } = node
+        setTree((prev) => ({ ...prev, [id]: { name, parent, type } }))
     }
 
-    const memoizedContextValue = useMemo(() => ({ data, getFirebaseData }), [data])
+    const memoizedContextValue = useMemo(() => ({ folders, setFirebaseData }), [folders])
+
+    useEffect(() => {
+        fetchData()
+            .then((data) => {
+                if (data) {
+                    setTree(data)
+                }
+            })
+            .catch((error) => {
+                toast.error(error.message, {
+                    ariaProps: {
+                        role: 'alert',
+                        'aria-live': 'assertive',
+                    },
+                })
+            })
+    }, [])
 
     return <FirebaseContext.Provider value={memoizedContextValue}>{children}</FirebaseContext.Provider>
 }

@@ -18,14 +18,32 @@ import { useEffect, useContext } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 
-export type stateType = {
-    data: {
-        name: string
-        type: '' | 'file' | 'folder'
-        parent: string
-    }
-    message: null | 'failed' | 'success'
+interface Data {
+    name: string
+    type: '' | 'file' | 'folder'
+    parent: string
 }
+
+export interface DataWithId extends Data {
+    id: string
+}
+
+type Success = {
+    data: Data
+    message: 'success'
+    extra: DataWithId
+}
+
+type Failure = {
+    data: Data
+    message: 'failed'
+}
+type Idle = {
+    data: Data
+    message: null
+}
+
+export type stateType = Idle | Success | Failure
 
 const initialState: stateType = {
     data: {
@@ -48,8 +66,7 @@ const SubmitButton = () => {
 
 export default function NewPage() {
     const [state, formAction] = useFormState<stateType>(writeData, initialState)
-    const { data } = useContext(FirebaseContext)
-    console.log(data)
+    const { folders, setFirebaseData } = useContext(FirebaseContext)
 
     useEffect(() => {
         if (state.message === 'failed') {
@@ -75,9 +92,11 @@ export default function NewPage() {
                     'aria-live': 'off',
                 },
             })
+            setFirebaseData(state.extra)
             redirect('/')
         }
-    }, [state.data.name, state.data.type, state.message])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.message])
 
     return (
         <Container
@@ -132,9 +151,11 @@ export default function NewPage() {
                             <em>Select Parent folder</em>
                         </MenuItem>
                         <MenuItem value="root">Root</MenuItem>
-                        <MenuItem value="folder1">Folder 1</MenuItem>
-                        <MenuItem value="folder2">Folder 2</MenuItem>
-                        <MenuItem value="folder3">Folder 3</MenuItem>
+                        {folders.map((folder) => (
+                            <MenuItem value={folder.id} key={folder.id}>
+                                {folder.name}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
 
