@@ -17,11 +17,15 @@ export default function ButtonAppBar() {
                         </Link>
                     </Typography>
 
-                    <Link href="/new">
-                        <Button aria-label="create new file or folder" style={{ color: 'white' }}>
-                            NEW
-                        </Button>
-                    </Link>
+                    <Button
+                        aria-label="create a new file or folder"
+                        style={{ color: 'white' }}
+                        variant="outlined"
+                        component={Link}
+                        href="/new"
+                    >
+                        NEW
+                    </Button>
                 </Toolbar>
             </AppBar>
         </Box>

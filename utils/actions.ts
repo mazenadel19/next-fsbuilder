@@ -1,9 +1,11 @@
 import { onValue, push, ref, set } from 'firebase/database'
 import { db } from '@/lib/firebase'
+import { stateType } from '@/app/new/page'
+import { redirect } from 'next/navigation'
 
 export const fetchData = async () => {
     return new Promise((resolve, reject) => {
-        const dbRef = ref(db, '/posts')
+        const dbRef = ref(db, 'fs')
         onValue(dbRef, (snapshot) => {
             const data = snapshot.val()
             if (data) {
@@ -15,13 +17,18 @@ export const fetchData = async () => {
     })
 }
 
-export const writeData = async () => {
-    const dbRef = ref(db, 'posts')
+export const writeData: any = async (prevState: stateType, formData: FormData) => {
+    const name = formData.get('name')
+    const type = formData.get('type')
+    const parent = formData.get('parent')
+
+    const dbRef = ref(db, 'fs')
     const newDbRef = push(dbRef)
     await set(newDbRef, {
-        title: 'My First Blog Post',
-        content: 'This is the content of my blog post ',
-        author: 'John Doe',
+        name,
+        type,
+        parent,
     })
-    console.log('Data written successfully!')
+
+    redirect('/')
 }
