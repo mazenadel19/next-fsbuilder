@@ -1,4 +1,5 @@
 'use client'
+import { FirebaseContext } from '@/providers/context/firebase-context'
 import { writeData } from '@/utils/actions'
 import {
     Box,
@@ -13,7 +14,7 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 
@@ -47,6 +48,8 @@ const SubmitButton = () => {
 
 export default function NewPage() {
     const [state, formAction] = useFormState<stateType>(writeData, initialState)
+    const { data } = useContext(FirebaseContext)
+    console.log(data)
 
     useEffect(() => {
         if (state.message === 'failed') {
