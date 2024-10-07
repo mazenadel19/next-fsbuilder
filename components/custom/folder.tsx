@@ -27,7 +27,7 @@ const Folder = ({ node }: { node: Node }) => {
                         aria-label="View"
                         variant="outlined"
                         component={Link}
-                        href={{ pathname: `/view/${node.id}`, query: { data: JSON.stringify(node) } }}
+                        href={{ pathname: `/view/${node.id}`, query: { data: JSON.stringify(node) } } as any}
                     >
                         View
                     </Button>
