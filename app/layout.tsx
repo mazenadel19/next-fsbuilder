@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/app-layout'
 import FirebaseProvider from '@/providers/context/firebase-context'
 import ToastProvider from '@/providers/react-hot-toast-provider'
 import { TITLE } from './constants'
+import ErrorBoundary from '@/components/error/error-boundary'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -23,7 +24,9 @@ export default function RootLayout({
                 <MuiProvider>
                     <ToastProvider>
                         <AppLayout>
-                            <FirebaseProvider>{children}</FirebaseProvider>
+                            <FirebaseProvider>
+                                <ErrorBoundary>{children}</ErrorBoundary>
+                            </FirebaseProvider>
                         </AppLayout>
                     </ToastProvider>
                 </MuiProvider>

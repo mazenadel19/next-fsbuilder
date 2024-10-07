@@ -1,11 +1,12 @@
 'use client'
 import { createContext, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import { fetchData, FSDataType } from '../../utils/actions'
+import { fetchData, FSDataType } from '@/utils/actions'
 import { DataWithId } from '@/app/new/page'
 import { convertToTree, Node } from '@/utils/helper'
 
 interface FirebaseContextData {
+    data: FSDataType
     folders: {
         id: string
         name: string
@@ -16,6 +17,7 @@ interface FirebaseContextData {
     setFirebaseData: (node: DataWithId) => void
 }
 export const FirebaseContext = createContext<FirebaseContextData>({
+    data: {},
     folders: [],
     tree: [],
     setFirebaseData: () => {},
@@ -38,7 +40,7 @@ function FirebaseProvider({ children }: Readonly<{ children: React.ReactNode }>)
         setData((prev) => ({ ...prev, [id]: { name, parent, type } }))
     }
 
-    const memoizedContextValue = useMemo(() => ({ tree, folders, setFirebaseData }), [folders, tree])
+    const memoizedContextValue = useMemo(() => ({ data, tree, folders, setFirebaseData }), [data, folders, tree])
 
     useEffect(() => {
         fetchData()
