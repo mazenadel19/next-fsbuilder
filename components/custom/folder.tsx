@@ -2,6 +2,10 @@ import { Node } from '@/utils/helper'
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 const Folder = ({ node }: { node: Node }) => {
+    const onClick = () => {
+        localStorage.setItem('node', JSON.stringify(node))
+    }
+
     return (
         <Box
             p={2}
@@ -22,7 +26,18 @@ const Folder = ({ node }: { node: Node }) => {
         >
             <Typography variant="body1">{node.name}</Typography>
             <Box display="flex" gap={1}>
-                <Button aria-label="Edit" variant="outlined" component={Link} href={`${node.id}`}>
+                {(node?.children?.length ?? 0) > 0 && (
+                    <Button
+                        aria-label="View"
+                        variant="outlined"
+                        onClick={onClick}
+                        component={Link}
+                        href={`/view/${node.id}`}
+                    >
+                        View
+                    </Button>
+                )}
+                <Button aria-label="Edit" variant="outlined" component={Link} href={`/edit/${node.id}`}>
                     Edit
                 </Button>
                 <Button variant="contained" color="error" onClick={() => console.log('Delete clicked')}>
