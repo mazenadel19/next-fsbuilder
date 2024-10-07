@@ -2,10 +2,6 @@ import { Node } from '@/utils/helper'
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 const Folder = ({ node }: { node: Node }) => {
-    const onClick = () => {
-        localStorage.setItem('node', JSON.stringify(node))
-    }
-
     return (
         <Box
             p={2}
@@ -30,9 +26,8 @@ const Folder = ({ node }: { node: Node }) => {
                     <Button
                         aria-label="View"
                         variant="outlined"
-                        onClick={onClick}
                         component={Link}
-                        href={`/view/${node.id}`}
+                        href={{ pathname: `/view/${node.id}`, query: { data: JSON.stringify(node) } }}
                     >
                         View
                     </Button>
