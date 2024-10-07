@@ -1,21 +1,19 @@
 'use client'
-import { useContext } from 'react'
+import Tree from '@/components/custom/tree'
 import { FirebaseContext } from '@/providers/context/firebase-context'
-import { Button, Box, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
+import { useContext } from 'react'
 
 export default function Home() {
     const { tree } = useContext(FirebaseContext)
+
     if (!tree.length) {
         return (
-            <Box textAlign="center" sx={{ textJustify: 'inter-word' }}>
+            <Box flex={1} display="flex" justifyContent="center" alignItems="center">
                 <Typography variant="h6">No items found.</Typography>
             </Box>
         )
     }
 
-    return (
-        <div>
-            <Button variant="contained">Hello world</Button>
-        </div>
-    )
+    return <Tree tree={tree} />
 }
