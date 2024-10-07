@@ -23,7 +23,7 @@ const File = ({ node }: { node: Node }) => {
         >
             <Typography variant="body1">{node.name}</Typography>
             <Box display="flex" gap={1}>
-                <Button aria-label="Edit" variant="outlined" component={Link} href={`${node.id}`}>
+                <Button aria-label="Edit" variant="outlined" component={Link} href={`/edit/${node.id}`}>
                     Edit
                 </Button>
                 <Button variant="contained" color="error" onClick={() => console.log('Delete clicked')}>
