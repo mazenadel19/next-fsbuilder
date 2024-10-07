@@ -13,18 +13,21 @@ interface FirebaseContextData {
         parent: string
         type: string
     }[]
+    isLoading: boolean
     tree: Node[]
     setFirebaseData: (node: DataWithId) => void
 }
 export const FirebaseContext = createContext<FirebaseContextData>({
     data: {},
     folders: [],
+    isLoading: false,
     tree: [],
     setFirebaseData: () => {},
 })
 
 function FirebaseProvider({ children }: Readonly<{ children: React.ReactNode }>) {
     const [data, setData] = useState<FSDataType>({})
+    const [isLoading, setIsLoading] = useState(false)
     const tree = convertToTree(data)
 
     const folders = useMemo(
@@ -40,9 +43,13 @@ function FirebaseProvider({ children }: Readonly<{ children: React.ReactNode }>)
         setData((prev) => ({ ...prev, [id]: { name, parent, type } }))
     }
 
-    const memoizedContextValue = useMemo(() => ({ data, tree, folders, setFirebaseData }), [data, folders, tree])
+    const memoizedContextValue = useMemo(
+        () => ({ data, tree, folders, isLoading, setFirebaseData }),
+        [data, folders, tree, isLoading]
+    )
 
     useEffect(() => {
+        setIsLoading(true)
         fetchData()
             .then((data) => {
                 if (data) {
@@ -57,6 +64,7 @@ function FirebaseProvider({ children }: Readonly<{ children: React.ReactNode }>)
                     },
                 })
             })
+            .finally(() => setIsLoading(false))
     }, [])
 
     return <FirebaseContext.Provider value={memoizedContextValue}>{children}</FirebaseContext.Provider>

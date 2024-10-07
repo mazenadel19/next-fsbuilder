@@ -167,11 +167,23 @@ function Edit({ id }: Readonly<{ id: string }>) {
 }
 
 export default function EditPage({ params }: Readonly<{ params: { id: string } }>) {
-    const { data } = useContext(FirebaseContext)
+    const { data, isLoading } = useContext(FirebaseContext)
     const originalItem = data?.[params.id]
 
+    if (isLoading) {
+        return (
+            <Box flex={1} display="flex" justifyContent="center" alignItems="center">
+                <Typography variant="h6">Fetching data ....</Typography>
+            </Box>
+        )
+    }
+
     if (!originalItem?.name) {
-        return <>fetching data ....</>
+        return (
+            <Box flex={1} display="flex" justifyContent="center" alignItems="center">
+                <Typography variant="h6">No items found.</Typography>
+            </Box>
+        )
     }
 
     return <Edit id={params.id} />
