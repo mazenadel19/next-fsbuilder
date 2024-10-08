@@ -13,14 +13,7 @@ const ViewPage = ({ searchParams }: IView) => {
     const node: Node = searchParams.data ? JSON.parse(searchParams.data) : {}
 
     return node?.children?.length ? (
-        <Box
-            sx={{
-                padding: '2rem',
-                backgroundColor: 'white',
-                borderRadius: '1rem',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            }}
-        >
+        <Box>
             <Typography variant="h4" sx={{ marginBottom: '1rem' }} align="center">
                 {node.name.toUpperCase()}
             </Typography>
