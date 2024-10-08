@@ -74,8 +74,17 @@ export const editData: any = async (prevState: StateType, formData: FormData) =>
     const parent = formData.get('parent')
 
     try {
-        if (!id || !name || !type || !parent) {
-            throw new Error('Please Add All Fields')
+        if (!name) {
+            bang += '!'
+            throw new Error(`Please Add Name${bang}`)
+        }
+        if (!type) {
+            bang += '!'
+            throw new Error(`Please Add Type${bang}`)
+        }
+        if (!parent) {
+            bang += '!'
+            throw new Error(`Please Add Parent${bang}`)
         }
 
         const data = { name, type, parent }
@@ -104,7 +113,7 @@ export const editData: any = async (prevState: StateType, formData: FormData) =>
         }
     } catch (error: unknown) {
         console.error((error as Error).message)
-        return { data: { name, type, parent }, message: 'failed' }
+        return { data: { id, name, type, parent }, message: (error as Error).message }
     }
 }
 

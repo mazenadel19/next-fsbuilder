@@ -51,16 +51,8 @@ function Edit({ id }: Readonly<{ id: string }>) {
     const children = folders.filter((f) => f.parent === id)
 
     useEffect(() => {
-        if (state.message === 'failed') {
-            let errorMsg = ''
-            if (!state.data.name) {
-                errorMsg = 'Please Add The Name'
-            } else if (!state.data.type) {
-                errorMsg = 'Please Select The Type'
-            } else {
-                errorMsg = 'Please Select The Parent'
-            }
-            toast.error(errorMsg, {
+        if (state.message && state.message !== 'success') {
+            toast.error(state.message, {
                 ariaProps: {
                     role: 'alert',
                     'aria-live': 'assertive',
