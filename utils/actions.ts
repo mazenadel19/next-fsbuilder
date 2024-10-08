@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 import { BASE_URL } from '@/app/constants'
 import { Data, StateType } from '@/app/new/page'
@@ -14,7 +15,6 @@ export const fetchData = async () => {
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const writeData: any = async (prevState: StateType, formData: FormData) => {
     const name = formData.get('name')
     const type = formData.get('type')
@@ -96,5 +96,32 @@ export const editData: any = async (prevState: StateType, formData: FormData) =>
     } catch (error: unknown) {
         console.error((error as Error).message)
         return { data: { name, type, parent }, message: 'failed' }
+    }
+}
+
+export const deleteData: any = async (prevState: StateType, formData: FormData) => {
+    const id = formData.get('id') as string
+
+    try {
+        if (!id) {
+            throw new Error('Id Is Missing')
+        }
+
+        const response = await fetch(FS_END_POINT(id), {
+            method: 'delete',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+
+        if (!response.ok) {
+            throw new Error('Failed To Delete Data')
+        }
+
+        return { message: 'success' }
+    } catch (error: unknown) {
+        console.error((error as Error).message)
+        return { message: 'failed' }
     }
 }
