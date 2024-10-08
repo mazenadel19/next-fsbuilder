@@ -14,15 +14,24 @@ export const fetchData = async () => {
         throw new Error((error as Error).message)
     }
 }
-
+let bang = ''
 export const writeData: any = async (prevState: StateType, formData: FormData) => {
     const name = formData.get('name')
     const type = formData.get('type')
     const parent = formData.get('parent')
 
     try {
-        if (!name || !type || !parent) {
-            throw new Error('Please Add All Fields')
+        if (!name) {
+            bang += '!'
+            throw new Error(`Please Add Name${bang}`)
+        }
+        if (!type) {
+            bang += '!'
+            throw new Error(`Please Add Type${bang}`)
+        }
+        if (!parent) {
+            bang += '!'
+            throw new Error(`Please Add Parent${bang}`)
         }
 
         const data = { name, type, parent }
@@ -54,7 +63,7 @@ export const writeData: any = async (prevState: StateType, formData: FormData) =
         }
     } catch (error: unknown) {
         console.error((error as Error).message)
-        return { data: { name, type, parent }, message: 'failed' }
+        return { data: { name, type, parent }, message: (error as Error).message }
     }
 }
 
