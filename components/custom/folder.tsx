@@ -1,11 +1,8 @@
 import { Node } from '@/utils/helper'
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
+import DeleteForm from '../form/delete'
 const Folder = ({ node }: { node: Node }) => {
-    const onClick = () => {
-        localStorage.setItem('node', JSON.stringify(node))
-    }
-
     return (
         <Box
             p={2}
@@ -30,9 +27,8 @@ const Folder = ({ node }: { node: Node }) => {
                     <Button
                         aria-label="View"
                         variant="outlined"
-                        onClick={onClick}
                         component={Link}
-                        href={`/view/${node.id}`}
+                        href={{ pathname: `/view/${node.id}`, query: { data: JSON.stringify(node) } } as any}
                     >
                         View
                     </Button>
@@ -40,9 +36,8 @@ const Folder = ({ node }: { node: Node }) => {
                 <Button aria-label="Edit" variant="outlined" component={Link} href={`/edit/${node.id}`}>
                     Edit
                 </Button>
-                <Button variant="contained" color="error" onClick={() => console.log('Delete clicked')}>
-                    Delete
-                </Button>
+
+                <DeleteForm id={node.id} />
             </Box>
         </Box>
     )

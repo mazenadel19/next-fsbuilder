@@ -5,7 +5,15 @@ import { Box, Typography } from '@mui/material'
 import { useContext } from 'react'
 
 export default function Drives() {
-    const { tree } = useContext(FirebaseContext)
+    const { tree, isLoading } = useContext(FirebaseContext)
+
+    if (isLoading) {
+        return (
+            <Box flex={1} display="flex" justifyContent="center" alignItems="center">
+                <Typography variant="h6">Fetching data ....</Typography>
+            </Box>
+        )
+    }
 
     if (!tree.length) {
         return (

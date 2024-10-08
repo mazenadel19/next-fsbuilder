@@ -14,11 +14,11 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { useEffect, useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 
-interface Data<T> {
+export interface Data<T> {
     name: string
     type: T
     parent: string
@@ -43,9 +43,9 @@ type Idle = {
     message: null
 }
 
-export type stateType = Idle | Success | Failure
+export type StateType = Idle | Success | Failure
 
-const initialState: stateType = {
+const initialState: StateType = {
     data: {
         name: '',
         type: '',
@@ -65,20 +65,12 @@ const SubmitButton = () => {
 }
 
 export default function NewPage() {
-    const [state, formAction] = useFormState<stateType>(writeData, initialState)
+    const [state, formAction] = useFormState<StateType>(writeData, initialState)
     const { folders, setFirebaseData } = useContext(FirebaseContext)
 
     useEffect(() => {
-        if (state.message === 'failed') {
-            let errorMsg = ''
-            if (!state.data.name) {
-                errorMsg = 'Please Add The Name'
-            } else if (!state.data.type) {
-                errorMsg = 'Please Select The Type'
-            } else {
-                errorMsg = 'Please Select The Parent'
-            }
-            toast.error(errorMsg, {
+        if (state.message && state.message !== 'success') {
+            toast.error(state.message, {
                 ariaProps: {
                     role: 'alert',
                     'aria-live': 'assertive',
@@ -114,14 +106,13 @@ export default function NewPage() {
                     fullWidth
                     variant="outlined"
                     margin="normal"
-                    required
                     aria-label="Name of file or folder"
                     placeholder="Name of file or folder"
                     defaultValue={state.data.name}
                 />
 
                 {/* Type Select */}
-                <FormControl fullWidth margin="normal" required>
+                <FormControl fullWidth margin="normal">
                     <Select
                         name="type"
                         defaultValue={state.data.type}
@@ -139,7 +130,7 @@ export default function NewPage() {
                 </FormControl>
 
                 {/* Parent Select */}
-                <FormControl fullWidth margin="normal" required>
+                <FormControl fullWidth margin="normal">
                     <Select
                         name="parent"
                         defaultValue={state.data.parent}
